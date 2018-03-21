@@ -25,6 +25,12 @@ After this, you will get the following files:
  - bias_init_vector.pkl
  - train_images_captions_index.pkl
 
+Finally, make sure that the `data` folder contains the following files:
+ - annotations
+ - coco-train-idxs.p
+ - captions_index.pkl
+ - word_to_idx.pkl
+ - idx_to_word.pkl
 
 
 
