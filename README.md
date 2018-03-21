@@ -6,5 +6,12 @@ Regularizing RNNs for Caption Generation by Reconstructing The Past with The Pre
  - Pytorch 0.12
  - CUDA 8.0
 
-## Training
+## Image Captioning
+
+### Installation
+1. Download my preprocessed [data](https://drive.google.com/open?id=1MxKySRCnXN2Q0bBg5Asi_mjJPpNwhtC5)
+
+
+## Code  Captioning
+
 
