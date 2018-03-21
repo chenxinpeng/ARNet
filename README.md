@@ -8,8 +8,16 @@ Regularizing RNNs for Caption Generation by Reconstructing The Past with The Pre
 
 ## Image Captioning
 
-### Installation
-1. Download my preprocessed [data](https://drive.google.com/open?id=1MxKySRCnXN2Q0bBg5Asi_mjJPpNwhtC5)
+### Data Pre-processing
+You can download and use the data from [here](https://drive.google.com/open?id=1MxKySRCnXN2Q0bBg5Asi_mjJPpNwhtC5):
+```bash
+unzip -q data.zip
+```
+
+You can also pre-process the data by yourself: 
+```python
+python3.6 prepro_build_vocab.py --word_count_threshold 5
+```
 
 
 ## Code  Captioning
