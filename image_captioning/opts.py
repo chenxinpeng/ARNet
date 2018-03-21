@@ -12,7 +12,7 @@ def parse_opt():
     parser.add_argument('--train_annotations', type=str, default='data/annotations/captions_train2014.json')
     parser.add_argument('--val_annotations', type=str, default='data/annotations/captions_val2014.json')
 
-    # karpathy splits
+    # karpathy's splits
     parser.add_argument('--train_split', type=str, default='data/splits/coco_train.txt')
     parser.add_argument('--test_split', type=str, default='data/splits/coco_test.txt')
     parser.add_argument('--val_split', type=str, default='data/splits/coco_val.txt')
@@ -22,34 +22,32 @@ def parse_opt():
     parser.add_argument('--train_split_online', type=str, default='data/splits/coco_train_online.txt')
     parser.add_argument('--val_split_online', type=str, default='data/splits/coco_val_online.txt')
 
-    # preprocessed file path
+    # params of preprocessed data
     parser.add_argument('--train_val_imageNames_to_imageIDs_path', type=str, default='data/train_val_imageNames_to_imageIDs.pkl')
     parser.add_argument('--official_train_captions_path', type=str, default='data/train_images_captions_official.pkl')
     parser.add_argument('--official_val_captions_path', type=str, default='data/val_images_captions_official.pkl')
     parser.add_argument('--train_images_captions_path', type=str, default='data/train_images_captions.pkl')
     parser.add_argument('--val_images_captions_path', type=str, default='data/val_images_captions.pkl')
-
-    # 将每张图像的 caption 与 word_to_idx 中的 index 对应起来, 用矩阵的格式保存起来
     parser.add_argument('--word_to_idx_path', type=str, default='data/word_to_idx.pkl')
     parser.add_argument('--idx_to_word_path', type=str, default='data/idx_to_word.pkl')
     parser.add_argument('--bias_init_vector_path', type=str, default='data/bias_init_vector.pkl')
     parser.add_argument('--train_images_captions_index', type=str, default='data/train_images_captions_index.pkl')
 
-    # focal loss 参数
+    # params of focal loss
     parser.add_argument('--focal_gamma', type=float, default=2)
 
-    # batch normalization 参数
+    # batch normalization
     parser.add_argument('--epsilon', type=float, default=0.001)
 
-    # label smoothing 参数
+    # label smoothing
     parser.add_argument('--label_smoothing', type=float, default=0.1)
 
-    # t-SNE 函数参数
+    # params of t-SNE visualization
     parser.add_argument('--t_SNE_batch_size', type=int, default=64)
     parser.add_argument('--t_SNE_model_path', type=str, default='')
     parser.add_argument('--t_SNE_save_path', type=str, default='')
 
-    # reconstructor 参数, 路径
+    #  of regularizer
     parser.add_argument('--rcst_time', type=int, default=1)
     parser.add_argument('--rcst_size', type=int, default=512)
     parser.add_argument('--rcst_weight', type=float, default=0.005)
@@ -58,11 +56,11 @@ def parse_opt():
     parser.add_argument('--rcst_model_path', type=str, default='')
     parser.add_argument('--rcst_train_json_path', type=str, default='')
 
-    # zoneout parameters
+    # params of ZoneOut
     parser.add_argument('--zoneout_factor_cell', type=float, default=0.1)
     parser.add_argument('--zoneout_factor_output', type=float, default=0.0)
 
-    # ensemble model parameters
+    # ensemble model
     parser.add_argument('--ensemble_file_path', type=str, default='data/splits/coco_test.txt')
     parser.add_argument('--ensemble_json_path', type=str, default='')
     parser.add_argument('--ensemble_model_0', type=str, default='')
@@ -71,19 +69,6 @@ def parse_opt():
     parser.add_argument('--ensemble_model_3', type=str, default='')
     parser.add_argument('--ensemble_model_4', type=str, default='')
     parser.add_argument('--ensemble_model_5', type=str, default='')
-    parser.add_argument('--ensemble_model_6', type=str, default='')
-    parser.add_argument('--ensemble_model_7', type=str, default='')
-    parser.add_argument('--ensemble_model_8', type=str, default='')
-    parser.add_argument('--ensemble_model_9', type=str, default='')
-    parser.add_argument('--ensemble_model_10', type=str, default='')
-    parser.add_argument('--ensemble_model_11', type=str, default='')
-    parser.add_argument('--ensemble_model_12', type=str, default='')
-    parser.add_argument('--ensemble_model_13', type=str, default='')
-    parser.add_argument('--ensemble_model_14', type=str, default='')
-    parser.add_argument('--ensemble_model_15', type=str, default='')
-    parser.add_argument('--ensemble_model_16', type=str, default='')
-    parser.add_argument('--ensemble_model_17', type=str, default='')
-    parser.add_argument('--ensemble_model_18', type=str, default='')
 
     # inference function parameters
     parser.add_argument('--infer_file_path', type=str, default='data/splits/coco_test.txt')
@@ -91,7 +76,8 @@ def parse_opt():
     parser.add_argument('--infer_model_path', type=str, default='')
 
     # self-critical training function parameters
-    parser.add_argument('--grad_clip', type=float, default=0.1, help='clip gradients at this value')
+    parser.add_argument('--grad_clip', type=float, default=0.1,
+                        help='clip gradients at this value')
 
     parser.add_argument('--scst_learning_rate', type=float, default=0.00005)
     parser.add_argument('--scst_learning_rate_decay', type=float, default=0.8)
@@ -110,7 +96,7 @@ def parse_opt():
     parser.add_argument('--beam_size', type=int, default=1)
     parser.add_argument('--beam_length_normalization_factor', type=float, default=0.0)
 
-    # 来自 Luo
+    # from Ruotian Luo
     parser.add_argument('--train_only', type=int, default=0)
     parser.add_argument('--caption_model', type=str, default='caption_model')
     parser.add_argument('--input_json', type=str, default='data/cocotalk.json')
@@ -121,14 +107,14 @@ def parse_opt():
     # XE 训练的一些参数, 路径
     parser.add_argument('--train_json_path', type=str, default='')
     parser.add_argument('--model_save_basepath', type=str, default='models')
-    parser.add_argument('--model_name', type=str, default='soft_attention')
+    parser.add_argument('--model_name', type=str, default='')
+
+    # model saving path training by cross entropy loss function
+    parser.add_argument('--xe_model_save_path', type=str, default='')
 
     # 从上次训练保存的 model 文件开始接着训练
     parser.add_argument('--start_from', type=str, default=None)
     parser.add_argument('--start_from_epoch', type=int, default=0)
-
-    # XE 模型训练保存路径
-    parser.add_argument('--xe_model_save_path', type=str, default='')
 
     parser.add_argument('--use_cuda', type=bool, default=True)
     parser.add_argument('--seed', type=int, default=110)
@@ -137,7 +123,7 @@ def parse_opt():
     parser.add_argument('--batch_size', type=int, default=80)
     parser.add_argument('--early_stop_value', type=int, default=10)
 
-    # 优化器, 学习率参数
+    # params of optimizer
     parser.add_argument('--optim', type=str, default='adam')
     parser.add_argument('--learning_rate', type=float, default=5e-4)
     parser.add_argument('--learning_rate_decay_start', type=int, default=-1)
@@ -148,11 +134,11 @@ def parse_opt():
     parser.add_argument('--optim_epsilon', type=float, default=1e-8)
     parser.add_argument('--optim_weight_decay', type=float, default=0.00001)
 
-    # Zoneout 参数
+    # params of ZoneOut
     parser.add_argument('--c_ratio', type=float, default=0.0)
     parser.add_argument('--h_ratio', type=float, default=0.0)
 
-    # scheduled sampling 参数
+    # params of Scheduled Sampling (SS)
     parser.add_argument('--ss_prob', type=float, default=0.0)
     parser.add_argument('--scheduled_sampling_start', type=int, default=-1)
     parser.add_argument('--scheduled_sampling_increase_every', type=int, default=5)
@@ -174,7 +160,7 @@ def parse_opt():
     parser.add_argument('--n_reviewers', type=int, default=8)
     parser.add_argument('--top_word_count', type=int, default=1000)
 
-    # 正常图像提取的 conv feature and fc feature, 默认是 inception-v4
+    # conv features and fc features, default is inception-v4
     parser.add_argument('--conv_feat_path', type=str, default='data/feats/mscoco_feats_v4_conv')
     parser.add_argument('--fc_feat_path', type=str, default='data/feats/mscoco_feats_v4_fc')
 
