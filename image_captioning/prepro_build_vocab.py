@@ -1,9 +1,3 @@
-# -----------------------------------------------------------------------
-# We preprocess the text data by lower casing, and replacing words which
-# occur less than 5 times in the 82K training set with <unk>;
-# This results in a vocabulary size of 10,622 (from 32,807 words).
-# -----------------------------------------------------------------------
-
 import os
 import re
 import numpy as np
@@ -11,13 +5,11 @@ from six.moves import cPickle
 import time
 import opts
 
-FLAGS = opts.parse_opt()
 
-
-# ---------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------
 # Borrowed this function from NeuralTalk:
 # https://github.com/karpathy/neuraltalk/blob/master/driver.py#L16
-# ---------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------
 def preProBuildWordVocab(sentence_iterator, word_count_threshold=5):
     print('Preprocessing word counts and creating vocab based on word count threshold %d' % word_count_threshold)
     t0 = time.time()
@@ -84,7 +76,7 @@ def generate_train_index(images_captions):
     train_images_captions_index = {}
 
     for each_img, sents in images_captions.items():
-        sents_index = np.zeros([len(sents), FLAGS.lstm_step], dtype=np.int32)
+        sents_index = np.zeros([len(sents), opt.lstm_step], dtype=np.int32)
         for idy, sent in enumerate(sents):
             sent = sent.lower()
             sent = sent.replace(',', ' ,')
@@ -108,7 +100,7 @@ def generate_train_index(images_captions):
             if '"' in tmp_sent: tmp_sent.remove('"')
 
             for idx, word in enumerate(tmp_sent):
-                if idx == FLAGS.lstm_step-1:
+                if idx == opt.lstm_step-1:
                     sents_index[idy, idx] = word_to_idx['EOS']
                     break
                 if word in word_to_idx:
@@ -123,10 +115,12 @@ def generate_train_index(images_captions):
 
 
 if __name__ == "__main__":
-    with open(FLAGS.official_train_captions_path, 'r') as train_fr:
+    opt = opts.parse_opt()
+
+    with open(opt.official_train_captions_path, 'r') as train_fr:
         train_images_captions = cPickle.load(train_fr)
 
-    with open(FLAGS.official_val_captions_path, 'r') as val_fr:
+    with open(opt.official_val_captions_path, 'r') as val_fr:
         val_images_captions = cPickle.load(val_fr)
 
     # combine all sentences in captions
@@ -145,13 +139,13 @@ if __name__ == "__main__":
     train_images_captions_index = generate_train_index(images_captions)
 
     # save
-    with open(FLAGS.idx_to_word_path, 'w') as fw:
+    with open(opt.idx_to_word_path, 'w') as fw:
         cPickle.dump(idx_to_word, fw)
 
-    with open(FLAGS.word_to_idx_path, 'w') as fw:
+    with open(opt.word_to_idx_path, 'w') as fw:
         cPickle.dump(word_to_idx, fw)
 
-    np.save(FLAGS.bias_init_vector_path, bias_init_vector)
+    np.save(opt.bias_init_vector_path, bias_init_vector)
 
-    with open(FLAGS.train_images_captions_index, 'w') as f:
+    with open(opt.train_images_captions_index, 'w') as f:
         cPickle.dump(train_images_captions_index, f)
