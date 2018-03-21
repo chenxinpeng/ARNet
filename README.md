@@ -19,6 +19,14 @@ You can also pre-process the data by yourself:
 python3.6 prepro_build_vocab.py --word_count_threshold 5
 ```
 
+After this, you will get the following files:
+ - word_to_idx.pkl
+ - idx_to_word.pkl
+ - bias_init_vector.pkl
+ - train_images_captions_index.pkl
+
+
+
 
 ## Code  Captioning
 
