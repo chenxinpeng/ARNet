@@ -43,12 +43,12 @@ Finally, make sure that the `data` folder contains the following files:
 
 ### Encoder-Decoder
 
-#### Training
+#### Training with MLE
 ```bash
 ./bash_image_caption_ende_xe.sh
 ```
 
-#### Fine-tuning with ARNet
+#### Fine-tuning with our ARNet
 ```bash
 ./bash_image_caption_ende_rcst_lstm.sh
 ```
@@ -66,12 +66,12 @@ Finally, make sure that the `data` folder contains the following files:
 
 ### Attentive Encoder-Decoder
 
-#### Training
+#### Training with MLE
 ```bash
 ./bash_image_caption_soft_att_xe.sh
 ```
 
-#### Fine-tuning with ARNet
+#### Fine-tuning with our ARNet
 ```bash
 ./bash_image_caption_soft_att_rcst_lstm.sh
 ```
