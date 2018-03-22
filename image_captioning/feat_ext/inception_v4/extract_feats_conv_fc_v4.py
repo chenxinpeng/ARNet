@@ -16,10 +16,14 @@ slim = tf.contrib.slim
 image_size = inception.inception_v4.default_image_size
 
 mscoco_images_path = '/data1/ailab_view/laviechen/image_captioning_pth/data/images/mscoco'
+images_lists = sorted(glob.glob(mscoco_images_path + '/*.jpg'))
+
 images_conv_feats_save_path = '/data1/ailab_view/laviechen/image_captioning_pth/data/feats/mscoco_feats_v4_conv'
 images_fc_feats_save_path = '/data1/ailab_view/laviechen/image_captioning_pth/data/feats/mscoco_feats_v4_fc'
-
-images_lists = sorted(glob.glob(mscoco_images_path + '/*.jpg'))
+if os.path.isdir(images_conv_feats_save_path) is False:
+    os.mkdir(images_conv_feats_save_path)
+if os.path.isdir(images_fc_feats_save_path) is False:
+    os.mkdir(images_fc_feats_save_path)
 
 tf_image = tf.placeholder(tf.string, None)
 image = tf.image.decode_jpeg(tf_image, channels=3)

@@ -9,8 +9,12 @@ Regularizing RNNs for Caption Generation by Reconstructing The Past with The Pre
 ## Image Captioning
 
 ### Image Feature Extraction
-Download the MSCOCO data from [here](http://cocodataset.org/): train2014, val2014, and test2014, respectively. Uncompress and move them into `data/images/mscoco`.
+Download the MSCOCO data from [here](http://cocodataset.org/): train2014, val2014, and test2014, respectively. Uncompress and put them into `data/images/mscoco`. For simplicity, we move all the images into one directory with a shell script.
 
+In our paper, we use [Inception-v4](https://github.com/tensorflow/models/blob/master/research/slim/nets/inception_v4.py) network as image encoder, `cd` to `feat_ext/inception_v4`, download the weights of Inception-v4 from [here](http://download.tensorflow.org/models/inception_v4_2016_09_09.tar.gz), then extract the image features as follows:
+```bash
+CUDA_VISIBLE_DEVICES=0 python3.6 extract_feats_conv_fc_v4.py
+```
 
 
 ### Data Pre-processing
