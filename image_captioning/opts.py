@@ -43,9 +43,9 @@ def parse_opt():
     parser.add_argument('--label_smoothing', type=float, default=0.1)
 
     # params of t-SNE visualization
-    parser.add_argument('--t_SNE_batch_size', type=int, default=64)
-    parser.add_argument('--t_SNE_model_path', type=str, default='')
-    parser.add_argument('--t_SNE_save_path', type=str, default='')
+    parser.add_argument('--vis_batch_size', type=int, default=64)
+    parser.add_argument('--vis_model_path', type=str, default='')
+    parser.add_argument('--vis_save_path', type=str, default='')
 
     # ARNet
     parser.add_argument('--rcst_time', type=int, default=1)
@@ -108,8 +108,6 @@ def parse_opt():
     parser.add_argument('--train_json_path', type=str, default='')
     parser.add_argument('--model_save_basepath', type=str, default='models')
     parser.add_argument('--model_name', type=str, default='')
-
-    # model saving path training by cross entropy loss function
     parser.add_argument('--xe_model_save_path', type=str, default='')
 
     # 从上次训练保存的 model 文件开始接着训练
