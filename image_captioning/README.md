@@ -73,7 +73,7 @@ First, get the hidden states of the sentences:
 ./bash_image_caption_ende_vis.sh
 ```
 
-Then, visualize the hidden states:
+Then, visualize the hidden states, for example:
 ```bash
 python3.6 prepro_tsne_reduction_vis.py --vis_batch_size 80 \\
                                        --truncation 0  \\
@@ -115,7 +115,7 @@ First, get the hidden states of the sentences:
 ./bash_image_caption_soft_att_vis.sh
 ```
 
-Then, visualize the hidden states:
+Then, visualize the hidden states, for example:
 ```bash
 python3.6 prepro_tsne_reduction_vis.py --vis_batch_size 80 \\
                                        --truncation 0  \\
