@@ -42,7 +42,7 @@ Finally, make sure that the `data` folder contains the following files:
 Download and the `coco-caption` files which are used for evaluation from [here](). I have changed these evaluation code into `Python 3.6`since my environment is Python 3.6. Uncompress the `coco-caption` under the current folder.
 
 
-## Encoder-Decoder
+## Encoder-Decoder Model
 
 ### Training with MLE
 ```bash
@@ -67,7 +67,7 @@ The fine-tuned model with our ARNet can be downloaded from [here](https://drive.
 ```
 
 
-## Attentive Encoder-Decoder
+## Attentive Encoder-Decoder Model
 
 ### Training with MLE
 ```bash
