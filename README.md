@@ -5,7 +5,7 @@ Regularizing RNNs for Caption Generation by Reconstructing The Past with The Pre
 
  - [Image Captioning](https://github.com/chenxinpeng/ARNet/tree/master/image_captioning)
  - [Code Captioning](https://github.com/chenxinpeng/ARNet/tree/master/code_captioning)
- - [Permuted Sequential MNIST]()
+ - [Permuted Sequential MNIST](https://github.com/chenxinpeng/ARNet/tree/master/permuted_sequential_mnist)
  
 ## Citation
 
