@@ -24,7 +24,7 @@ You can also pre-process the data by yourself:
 python3.6 prepro_build_vocab.py --word_count_threshold 5
 ```
 
-After this, you will get the following files:
+Afterwards, you will get the following files:
  - word_to_idx.pkl
  - idx_to_word.pkl
  - bias_init_vector.pkl
@@ -36,6 +36,8 @@ Finally, make sure that the `data` folder contains the following files:
  - captions_index.pkl
  - word_to_idx.pkl
  - idx_to_word.pkl
+
+Download and the `coco-caption` files which are used for evaluation from [here](). I have changed these evaluation code into `Python 3.6`since my environment is Python 3.6. Uncompress the `coco-caption` under the current folder.
 
 
 ## Encoder-Decoder
