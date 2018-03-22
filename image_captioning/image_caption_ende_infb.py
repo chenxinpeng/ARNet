@@ -21,12 +21,8 @@ def beam_search(opt):
     beam_images_names = open(opt.beam_file_path, 'r').read().splitlines()
 
     model = EncoderDecoder(opt)
-
     model.load_state_dict(torch.load(opt.beam_model_path))
-
     model.cuda()
-
-    # eval mode
     model.eval()
 
     beam_images_sents = []

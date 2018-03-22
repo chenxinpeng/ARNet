@@ -14,7 +14,7 @@ import torch.optim as optim
 from torch.autograd import *
 
 from utils_model import *
-from class_soft_att_r1 import *
+from class_soft_att import *
 
 
 def beam_search(opt, beam_images_names):

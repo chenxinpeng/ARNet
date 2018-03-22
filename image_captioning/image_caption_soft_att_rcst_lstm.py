@@ -12,10 +12,10 @@ import torch
 from torch.autograd import *
 
 from utils_model import *
-from class_soft_att_rcst_LSTM import *
+from class_soft_att_rcst_lstm import *
 
 
-def rcst(opt):
+def ARNet(opt):
     torch.manual_seed(opt.seed)
     torch.cuda.manual_seed(opt.seed)
 
@@ -170,4 +170,4 @@ if __name__ == '__main__':
     if os.path.isdir(opt.rcst_model_save_path) is False:
         os.mkdir(opt.rcst_model_save_path)
 
-    rcst(opt)
+    ARNet(opt)

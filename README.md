@@ -43,11 +43,47 @@ Finally, make sure that the `data` folder contains the following files:
 
 ### Encoder-Decoder
 
-### Encoder-Decoder + ARNet
+#### Training
+```bash
+./bash_image_caption_ende_xe.sh
+```
+
+#### Inference with Greedy Search
+```bash
+./bash_image_caption_ende_infg.sh
+```
+
+#### Inference with Beam Search
+```bash
+./bash_image_caption_ende_infb.sh
+```
+
+###  Encoder-Decoder + ARNet
+```bash
+./bash_image_caption_ende_rcst_lstm.sh
+```
 
 ### Attentive Encoder-Decoder
 
+#### Training
+```bash
+./bash_image_caption_soft_att_xe.sh
+```
+
+#### Inference with Greedy Search
+```bash
+./bash_image_caption_soft_att_infg.sh
+```
+
+#### Inference with Beam Search
+```bash
+./bash_image_caption_soft_att_infb.sh
+```
+
 ### Attentive Encoder-Decoder + ARNet
+```bash
+./bash_image_caption_soft_att_rcst_lstm.sh
+```
 
 
 ## Code  Captioning
