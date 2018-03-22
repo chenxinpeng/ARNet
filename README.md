@@ -16,8 +16,7 @@ In our paper, we use [Inception-v4](https://github.com/tensorflow/models/blob/ma
 CUDA_VISIBLE_DEVICES=0 python3.6 extract_feats_conv_fc_v4.py
 ```
 
-
-### Data Pre-processing
+### Caption Data Pre-processing
 You can download and use the data from [here](https://drive.google.com/open?id=1MxKySRCnXN2Q0bBg5Asi_mjJPpNwhtC5):
 ```bash
 unzip -q data.zip
@@ -41,6 +40,8 @@ Finally, make sure that the `data` folder contains the following files:
  - word_to_idx.pkl
  - idx_to_word.pkl
 
+
+ ### Training
 
 
 ## Code  Captioning
