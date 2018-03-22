@@ -9,7 +9,7 @@ Regularizing RNNs for Caption Generation by Reconstructing The Past with The Pre
 ## Image Captioning
 
 ### Image Feature Extraction
-Download the MSCOCO data from [here](http://cocodataset.org/): train2014, val2014, and test2014, respectively. Uncompress and move them and put them into `data/images/mscoco`.
+Download the MSCOCO data from [here](http://cocodataset.org/): train2014, val2014, and test2014, respectively. Uncompress and move them into `data/images/mscoco`.
 
 
 
