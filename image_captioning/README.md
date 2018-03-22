@@ -75,7 +75,10 @@ First, get the hidden states of the sentences:
 
 Then, visualize the hidden states:
 ```bash
-python3.6 prepro_tsne_reduction.py --vis_batch_size 80 --truncation 0  --hidden_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states.pkl --hidden_reduction_save_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states_reduction.pkl
+python3.6 prepro_tsne_reduction.py --vis_batch_size 80 \\
+                                   --truncation 0  \\
+                                   --hidden_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states.pkl \\
+                                   --hidden_reduction_save_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states_reduction.pkl
 ```
 
 
