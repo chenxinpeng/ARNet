@@ -14,7 +14,10 @@ import opts
 
 
 class LSTMCore(nn.Module):
-    def __init__(self, input_encoding_size, lstm_size, drop_prob_lm):
+    def __init__(self, 
+                 input_encoding_size, 
+                 lstm_size, 
+                 drop_prob_lm):
         super(LSTMCore, self).__init__()
 
         self.input_encoding_size = input_encoding_size

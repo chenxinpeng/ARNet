@@ -13,7 +13,6 @@ import torch
 import torch.optim as optim
 from torch.autograd import *
 
-from utils_rewards import *
 from utils_model import *
 from class_soft_att_r1 import *
 

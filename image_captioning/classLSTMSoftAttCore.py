@@ -65,7 +65,7 @@ class LSTMSoftAttentionCore(nn.Module):
         pre_h = state[0][-1]
         pre_c = state[1][-1]
 
-        # att_seq, 即是 batch * 64 * 1536(以 inception-v4 为例), 还是 TF 中实现的那一套
+        # att_seq, batch * 64 * 1536
         att = att_seq.view(-1, self.conv_feat_size)
         att_linear = self.att_2_att_h(att)  # (batch * 64) * 512
         att_linear = att_linear.view(-1, self.conv_att_size, self.att_hidden_size)  # batch * 64 * 512
@@ -82,10 +82,11 @@ class LSTMSoftAttentionCore(nn.Module):
         conv_weight = nn.Softmax(dim=1)(att_out)  # batch * conv_att_size
         conv_weight_unsqueeze = conv_weight.unsqueeze(2)  # batch * conv_att_size * 1
 
-        att_seq_t = att_seq.transpose(1, 2)  # batch * conv_feat_size * conv_att_size, batch * 1536 * 64
+        # batch * conv_feat_size * conv_att_size, batch * 1536 * 64
+        att_seq_t = att_seq.transpose(1, 2)
 
-        # 此处被本人修改, 指定只在 dim=2 上进行 squeeze, 要不然不适用于 batch 为 1 的情况
-        z = torch.bmm(att_seq_t, conv_weight_unsqueeze).squeeze(dim=2)  # batch * conv_feat_size * 1 --> batch * conv_feat_size
+        # batch * conv_feat_size * 1 --> batch * conv_feat_size
+        z = torch.bmm(att_seq_t, conv_weight_unsqueeze).squeeze(dim=2)
 
         all_input_sums = self.i2h(xt) + self.h2h(pre_h) + self.z2h(z)
         
@@ -99,7 +100,6 @@ class LSTMSoftAttentionCore(nn.Module):
 
         next_c = forget_gate * pre_c + in_gate * in_transform
         next_h = out_gate * F.tanh(next_c)
-
         next_h = self.dropout(next_h)
 
         output = next_h
@@ -107,11 +107,12 @@ class LSTMSoftAttentionCore(nn.Module):
 
         return output, state
 
+    # for ARNet
     def rcst_forward(self, xt, att_seq, state):  # state = (pre_h, pre_c)
         pre_h = state[0][-1]
         pre_c = state[1][-1]
 
-        # att_seq, 即是 batch * 64 * 1536(以 inception-v4 为例), 还是 TF 中实现的那一套
+        # att_seq, batch * 64 * 1536
         att = att_seq.view(-1, self.conv_feat_size)
         att_linear = self.att_2_att_h(att)  # (batch * 64) * 512
         att_linear = att_linear.view(-1, self.conv_att_size, self.att_hidden_size)  # batch * 64 * 512
@@ -131,8 +132,6 @@ class LSTMSoftAttentionCore(nn.Module):
 
         att_seq_t = att_seq.transpose(1, 2)  # batch * conv_feat_size * conv_att_size, batch * 1536 * 64
 
-        # 此处被本人修改, 指定只在 dim=2 上进行 squeeze, 要不然不适用于 batch 为 1 的情况
-        # 此处的 z 即为 soft attention 得到的结果
         z = torch.bmm(att_seq_t, conv_weight_unsqueeze).squeeze(dim=2)  # batch * conv_feat_size * 1 --> batch * conv_feat_size
 
         all_input_sums = self.i2h(xt) + self.h2h(pre_h) + self.z2h(z)
@@ -147,7 +146,6 @@ class LSTMSoftAttentionCore(nn.Module):
 
         next_c = forget_gate * pre_c + in_gate * in_transform
         next_h = out_gate * F.tanh(next_c)
-
         next_h = self.dropout(next_h)
 
         output = next_h

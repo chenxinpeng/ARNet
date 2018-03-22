@@ -28,13 +28,11 @@ class ShowAttendTellModel(nn.Module):
         self.conv_feat_size = opt.conv_feat_size
         self.conv_att_size = opt.conv_att_size
         self.att_hidden_size = opt.att_hidden_size
-
         self.use_cuda = opt.use_cuda
 
         # Schedule sampling probability
         self.ss_prob = 0.0
 
-        # 由 fc feature 初始化 LSTM 的 state, (c, h)
         self.fc2h = nn.Linear(self.fc_feat_size, self.lstm_size)
 
         self.core = LSTMSoftAttentionCore(self.input_encoding_size,
@@ -44,10 +42,8 @@ class ShowAttendTellModel(nn.Module):
                                           self.att_hidden_size,
                                           self.drop_prob_lm)
 
-        # 注意因为 idx_to_word 是从 1 开始, 此处要加 1, 要不然会遇到 bug:
-        # cuda runtime error (59) : device-side assert triggered
         self.embed = nn.Embedding(self.vocab_size + 1, self.input_encoding_size)
-        self.logit = nn.Linear(self.lstm_size, self.vocab_size + 1)
+        self.logit = nn.Linear(self.lstm_size, self.vocab_size)
 
         self.init_weights()
 
@@ -67,9 +63,7 @@ class ShowAttendTellModel(nn.Module):
         state = (init_h, init_c)
         outputs = []
 
-        # 此处减 1 是考虑到需要最后一个作为 label
         for i in range(seq.size(1)-1):
-            # scheduled sampling
             if i >= 1 and self.ss_prob > 0.0:
                 sample_prob = fc_feats.data.new(batch_size).uniform_(0, 1)
                 sample_mask = sample_prob < self.ss_prob
@@ -99,7 +93,6 @@ class ShowAttendTellModel(nn.Module):
         return vocab_log_probs  # e.g. batch * 19 * vocab_size
 
     def sample_beam(self, fc_feats, att_feats, init_index, opt={}):
-        # 如果不能取到 beam_size 这个变量, 则令 beam_size 为 3
         beam_size = opt.get('beam_size', 3)
         batch_size = fc_feats.size(0)
         fc_feat_size = fc_feats.size(1)
@@ -247,11 +240,7 @@ class ShowAttendTellModel(nn.Module):
                     # scale logprobs by temperature
                     prob_prev = torch.exp(torch.div(logprobs.data, temperature)).cpu()
 
-                if self.use_cuda:
-                    it = torch.multinomial(prob_prev, 1).cuda()
-                else:
-                    it = torch.multinomial(prob_prev, 1)
-
+                it = torch.multinomial(prob_prev, 1).cuda()
                 sampleLogprobs = logprobs.gather(1, Variable(it, requires_grad=False).cuda())  # gather the logprobs at sampled positions
                 it = it.view(-1).long()  # and flatten indices for downstream processing
 
@@ -316,7 +305,7 @@ class ShowAttendTellModel(nn.Module):
                 output = F.log_softmax(self.logit(output.squeeze(0)), dim=1)
             outputs.append(output)
 
-        # 返回 hidden states
+        # return hidden states
         return state[0], outputs
 
     def free_running_get_hidden_states(self, fc_feats, att_feats, init_index, end_index):

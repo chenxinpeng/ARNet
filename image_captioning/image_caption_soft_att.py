@@ -13,9 +13,8 @@ import torch
 import torch.optim as optim
 from torch.autograd import *
 
-from utils_rewards import *
 from utils_model import *
-from class_soft_att_r1 import *
+from class_soft_att import *
 
 
 def train_xe(opt):
@@ -30,8 +29,7 @@ def train_xe(opt):
     # check compatibility if training is continued from previously saved model
     if vars(opt).get('start_from', None) is not None:
         assert os.path.isdir(opt.start_from), " %s must be a a path" % opt.start_from
-        model.load_state_dict(torch.load(os.path.join(opt.start_from,
-                                                      'model_epoch-' + str(opt.start_from_epoch) + '.pth')))
+        model.load_state_dict(torch.load(os.path.join(opt.start_from, 'model_epoch-' + str(opt.start_from_epoch) + '.pth')))
 
     current_learning_rate = opt.learning_rate
     if opt.optim == 'adam':
@@ -42,7 +40,7 @@ def train_xe(opt):
     else:
         raise Exception("optim not supported: {}".format(opt.feature_type))
 
-    # 也可以加载 optimizer
+    # load optimizer
     if vars(opt).get('start_from', None) is not None:
         optimizer.load_state_dict(torch.load(os.path.join(opt.start_from,
                                                           'optimizer_epoch-' + str(opt.start_from_epoch) + '.pth')))
@@ -63,7 +61,7 @@ def train_xe(opt):
 
             time_start = time.time()
 
-            # 等待当前设备上所有流中的所有核心完成
+            # wait for synchronize
             torch.cuda.synchronize()
 
             current_feats_conv = []
@@ -85,7 +83,6 @@ def train_xe(opt):
 
             current_feats_conv = np.reshape(current_feats_conv, [opt.batch_size, opt.conv_att_size, opt.conv_feat_size])
             current_feats_fc = np.reshape(current_feats_fc, [opt.batch_size, opt.fc_feat_size])
-
             current_gt_sents = np.asarray(current_gt_sents).astype(np.int64)
             current_masks = np.zeros((current_gt_sents.shape[0], current_gt_sents.shape[1]), dtype=np.float32)
 
@@ -100,27 +97,23 @@ def train_xe(opt):
             current_gt_sents_cuda = Variable(torch.from_numpy(current_gt_sents), requires_grad=False).cuda()
             current_masks_cuda = Variable(torch.from_numpy(current_masks), requires_grad=False).cuda()
 
-            # 梯度归零
             optimizer.zero_grad()
 
             criterion_input = model.forward(current_feats_fc_cuda, current_feats_conv_cuda, current_gt_sents_cuda)
-
-            # 注意此处喂入的是与生成的句子错开的 label,
-            # 如 BOS 对应的是 a, 而不是 BOS
             loss = criterion.forward(criterion_input, current_gt_sents_cuda[:, 1:], current_masks_cuda)
 
-            # 反向传播
+            # backward
             loss.backward()
 
-            # XE 训练部分不进行 clip gradient
+            # clip gradient
             # clip_gradient(optimizer, opt.grad_clip)
 
-            # 更新参数
+            # update params
             optimizer.step()
 
             train_loss = loss.data[0]
 
-            # 等待当前设备上所有流中的所有核心完成
+            # wait for synchronize
             torch.cuda.synchronize()
 
             time_end = time.time()
@@ -134,9 +127,9 @@ def train_xe(opt):
             torch.save(model.state_dict(), parameter_path)
             print("parameter model saved to {}".format(parameter_path))
 
-            # optimizer_path = os.path.join(opt.xe_model_save_path, 'optimizer_epoch-' + str(epoch) + '.pth')
-            # torch.save(optimizer.state_dict(), optimizer_path)
-            # print("optimizer model saved to {}".format(optimizer_path))
+            optimizer_path = os.path.join(opt.xe_model_save_path, 'optimizer_epoch-' + str(epoch) + '.pth')
+            torch.save(optimizer.state_dict(), optimizer_path)
+            print("optimizer model saved to {}".format(optimizer_path))
 
             model.eval()
 
