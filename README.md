@@ -41,7 +41,13 @@ Finally, make sure that the `data` folder contains the following files:
  - idx_to_word.pkl
 
 
- ### Training with Cross Entropy
+### Encoder-Decoder
+
+### Encoder-Decoder + ARNet
+
+### Attentive Encoder-Decoder
+
+### Attentive Encoder-Decoder + ARNet
 
 
 ## Code  Captioning

@@ -29,46 +29,120 @@ class EncoderDecoder(nn.Module):
         self.fc_feat_size = opt.fc_feat_size
 
         self.img_embed = nn.Linear(self.fc_feat_size, self.input_encoding_size)
+
         self.LSTMCore = LSTMCore(self.input_encoding_size, self.lstm_size, self.drop_prob_lm)
-        
+
+        # 注意因为 idx_to_word 是从 1 开始, 此处要加 1, 要不然会遇到 bug:
+        # cuda runtime error (59) : device-side assert triggered
         self.embed = nn.Embedding(self.vocab_size + 1, self.input_encoding_size)
         self.logit = nn.Linear(self.lstm_size, self.vocab_size)
 
         self.init_weights()
 
+        # ----------------------------
+        # 接着添加 reconstruct 参数部分
+        # ----------------------------
+        self.reconstruct_weights = opt.reconstruct_weight
+
+        self.reconstruct_lstm = LSTMCore(self.input_encoding_size, self.lstm_size, self.drop_prob_lm)
+
+        self.hidden_state_2_pre_hidden_state = nn.Linear(self.lstm_size, self.input_encoding_size)
+
+        self.reconstruct_init_weights()
+
     def init_weights(self):
         initrange = 0.1
         self.img_embed.weight.data.uniform_(-initrange, initrange)
         self.img_embed.bias.data.fill_(0)
+
         self.embed.weight.data.uniform_(-initrange, initrange)
+
         self.logit.weight.data.uniform_(-initrange, initrange)
         self.logit.bias.data.fill_(0)
 
     def init_hidden(self, batch_size):
         weight = next(self.parameters()).data
+
         return (Variable(weight.new(1, batch_size, self.lstm_size).zero_()),
                 Variable(weight.new(1, batch_size, self.lstm_size).zero_()))
 
+    # 初始化新添加的 reconstruct 部分
+    def reconstruct_init_weights(self):
+        initrange = 0.1
+        self.hidden_state_2_pre_hidden_state.weight.data.uniform_(-initrange, initrange)
+        self.hidden_state_2_pre_hidden_state.bias.data.fill_(0)
+
     def forward(self, fc_feats, seq):
         batch_size = fc_feats.size(0)
-        state = self.init_hidden(batch_size)
-        outputs = []
 
+        state = self.init_hidden(batch_size)
+
+        logit_seq = []
         for i in range(seq.size(1)):
             if i == 0:
                 xt = self.img_embed(fc_feats)
             else:
                 it = seq[:, i-1].clone()
+
                 if seq[:, i-1].data.sum() == 0:
                     break
+
                 xt = self.embed(it)
+
             output, state = self.LSTMCore.forward(xt, state)
 
             if i > 0:
-                output = F.log_softmax(self.logit(output.squeeze(0)))
-                outputs.append(output)
+                logit_words = F.log_softmax(self.logit(output.squeeze(0)))
+                logit_seq.append(logit_words)
 
-        return torch.cat([_.unsqueeze(1) for _ in outputs], 1).contiguous()
+        return torch.cat([_.unsqueeze(1) for _ in logit_seq], 1).contiguous()
+
+    def reconstruct_forward(self, fc_feats, seq, mask):
+        batch_size = fc_feats.size(0)
+
+        state = self.init_hidden(batch_size)
+        reconstruct_state = (state[0].clone(), state[1].clone())
+
+        logit_seq = []
+        reconstructor_loss = 0.0
+
+        for i in range(seq.size(1)):
+            if i == 0:
+                xt = self.img_embed(fc_feats)
+
+                output, state = self.LSTMCore.forward(xt, state)
+
+                previous_hidden_state = state[0].clone()
+
+                reconstruct_output, reconstruct_state = self.reconstruct_lstm.forward(xt, reconstruct_state)
+            else:
+                it = seq[:, i-1].clone()
+
+                if seq[:, i-1].data.sum() == 0:
+                    break
+
+                xt = self.embed(it)
+
+                output, state = self.LSTMCore.forward(xt, state)
+
+                logit_words = F.log_softmax(self.logit(output.squeeze(0)))
+                logit_seq.append(logit_words)
+
+                # 计算 reconstruct Loss
+                reconstruct_output, reconstruct_state = self.reconstruct_lstm.forward(output, reconstruct_state)
+
+                reconstruct_hidden_state = self.hidden_state_2_pre_hidden_state(reconstruct_output)
+                reconstruct_mask = mask[:, i].contiguous().view(-1, batch_size).repeat(1, self.lstm_size)
+                reconstruct_difference = reconstruct_hidden_state - previous_hidden_state
+
+                current_reconstructor_loss = torch.sum(torch.sum(torch.mul(reconstruct_difference, reconstruct_difference) * reconstruct_mask, dim=1))
+                current_reconstructor_loss = current_reconstructor_loss / batch_size * self.reconstruct_weights
+
+                reconstructor_loss += current_reconstructor_loss
+
+                previous_hidden_state = state[0].clone()
+
+        return torch.cat([_.unsqueeze(1) for _ in logit_seq], 1).contiguous(), reconstructor_loss
 
     def sample_beam(self, fc_feats, init_index, opt={}):
         beam_size = opt.get('beam_size', 3)  # 如果不能取到 beam_size 这个变量, 则令 beam_size 为 3
@@ -187,6 +261,7 @@ class EncoderDecoder(nn.Module):
         seq = []
         seqLogprobs = []
         logprobs_all = []
+
         state = self.init_hidden(batch_size)
 
         for t in range(self.seq_length):
@@ -194,11 +269,14 @@ class EncoderDecoder(nn.Module):
                 xt = self.img_embed(fc_feats)
             else:
                 if t == 1:
+                    # input BOS, 304
                     it = fc_feats.data.new(batch_size).long().fill_(init_index)
                 else:
                     sampleLogprobs, it = torch.max(logprobs.data, 1)
                     it = it.view(-1).long()
+
                 xt = self.embed(Variable(it, requires_grad=False).cuda())
+
             if t >= 2:
                 # stop when all finished
                 if t == 2:
