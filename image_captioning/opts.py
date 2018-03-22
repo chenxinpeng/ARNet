@@ -140,25 +140,26 @@ def parse_opt():
 
     # params of Scheduled Sampling (SS)
     parser.add_argument('--ss_prob', type=float, default=0.0)
-    parser.add_argument('--scheduled_sampling_start', type=int, default=-1)
-    parser.add_argument('--scheduled_sampling_increase_every', type=int, default=5)
-    parser.add_argument('--scheduled_sampling_increase_prob', type=float, default=0.05)
-    parser.add_argument('--scheduled_sampling_max_prob', type=float, default=0.25)
+    parser.add_argument('--ss_start', type=int, default=-1)
+    parser.add_argument('--ss_increase_every', type=int, default=5)
+    parser.add_argument('--ss_increase_prob', type=float, default=0.05)
+    parser.add_argument('--ss_max_prob', type=float, default=0.25)
+
+    # params of ReviewNet
+    parser.add_argument('--n_reviewers', type=int, default=8)
 
     parser.add_argument('--input_encoding_size', type=int, default=512)
     parser.add_argument('--lstm_size', type=int, default=512)
     parser.add_argument('--lstm_step', type=int, default=30)
     parser.add_argument('--seq_length', type=int, default=30)
-    parser.add_argument('--drop_prob_lm', type=float, default=0.1)
     parser.add_argument('--vocab_size', type=int, default=10516)
     parser.add_argument('--word_embed_size', type=int, default=512)
-    parser.add_argument('--feature_type', type=str, default='inception_v4')
     parser.add_argument('--conv_feat_size', type=int, default=1536)
     parser.add_argument('--conv_att_size', type=int, default=64)
     parser.add_argument('--fc_feat_size', type=int, default=1536)
     parser.add_argument('--att_hidden_size', type=int, default=512)
-    parser.add_argument('--n_reviewers', type=int, default=8)
     parser.add_argument('--top_word_count', type=int, default=1000)
+    parser.add_argument('--feature_type', type=str, default='inception_v4')
 
     # conv features and fc features, default is inception-v4
     parser.add_argument('--conv_feat_path', type=str, default='data/feats/mscoco_feats_v4_conv')
