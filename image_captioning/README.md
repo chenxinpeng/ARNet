@@ -39,7 +39,7 @@ Finally, make sure that the `data` folder contains the following files:
 
 
 ## Caption Evaluation Tools
-Download and the `coco-caption` files which are used for evaluation from [here](). I have changed these evaluation code into `Python 3.6`since my environment is Python 3.6. Uncompress the `coco-caption` under the current folder.
+Download and the `coco-caption` files which are used for evaluation from [here](https://drive.google.com/file/d/14gE7QT29gyPmOGuRDyKo-g0OJw1vEHRN/view?usp=sharing). I have changed these evaluation code into `Python 3.6`since my environment is Python 3.6. Uncompress the `coco-caption` under the current folder.
 
 
 ## Encoder-Decoder Model
@@ -75,10 +75,10 @@ First, get the hidden states of the sentences:
 
 Then, visualize the hidden states:
 ```bash
-python3.6 prepro_tsne_reduction.py --vis_batch_size 80 \\
-                                   --truncation 0  \\
-                                   --hidden_path models/encoder_decoder_inception_v4_seed_116/model_epoch-33_hidden_states.pkl \\
-                                   --hidden_reduction_save_path models/encoder_decoder_inception_v4_seed_116/model_epoch-33_hidden_states_reduction.pkl
+python3.6 prepro_tsne_reduction_vis.py --vis_batch_size 80 \\
+                                       --truncation 0  \\
+                                       --hidden_path models/encoder_decoder_inception_v4_seed_116/model_epoch-33_hidden_states.pkl \\
+                                       --hidden_reduction_save_path models/encoder_decoder_inception_v4_seed_116/model_epoch-33_hidden_states_reduction.pkl
 ```
 
 
@@ -117,8 +117,8 @@ First, get the hidden states of the sentences:
 
 Then, visualize the hidden states:
 ```bash
-python3.6 prepro_tsne_reduction.py --vis_batch_size 80 \\
-                                   --truncation 0  \\
-                                   --hidden_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states.pkl \\
-                                   --hidden_reduction_save_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states_reduction.pkl
+python3.6 prepro_tsne_reduction_vis.py --vis_batch_size 80 \\
+                                       --truncation 0  \\
+                                       --hidden_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states.pkl \\
+                                       --hidden_reduction_save_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states_reduction.pkl
 ```

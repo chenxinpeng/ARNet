@@ -2,13 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import collections
-import numpy as np
-from six.moves import cPickle
-
 import os
 import ipdb
 import math
+import collections
+import numpy as np
+from six.moves import cPickle
 
 import torch
 import torch.nn as nn
@@ -18,9 +17,7 @@ import opts
 opt = opts.parse_opt()
 
 
-# ==============================================================
 # Load pre-processed data
-# ==============================================================
 with open(opt.idx_to_word_path, 'rb') as f:
     print('\nload  {}'.format(opt.idx_to_word_path))
     idx_to_word = cPickle.load(f)
@@ -35,8 +32,6 @@ with open(opt.train_images_captions_index, 'rb') as f:
 
 
 def cosine_similarity(v1, v2):
-    # compute cosine similarity of v1 to v2:
-    # (v1 dot v2) / (||v1|| * ||v2||)
     sumxx, sumxy, sumyy = 0, 0, 0
     for i in range(len(v1)):
         x = v1[i]
@@ -47,9 +42,7 @@ def cosine_similarity(v1, v2):
     return 1.0 - sumxy / math.sqrt(sumxx * sumyy)
 
 
-# ===========================================
 # function for generating sentence from index
-# ===========================================
 def index_to_sentence(sentences_index):
     sentences = []
     for idx_word in sentences_index:
@@ -68,34 +61,9 @@ def index_to_sentence(sentences_index):
     return generated_sentence
 
 
-# =============================================
-# function for generating sentence from index
-# 将句子反向之后的函数接口
-# =============================================
-def index_to_sentence_reverse(sentences_index):
-    sentences = []
-    for idx_word in sentences_index:
-        word = idx_to_word[idx_word]
-        word = word.replace('\n', '').replace('\\', '').replace('"', '')
-        sentences.append(word)
-
-    punctuation = np.argmax(np.array(sentences) == 'EOS') + 1
-    sentences = sentences[:punctuation]
-    generated_sentence = ' '.join(sentences)
-    generated_sentence = generated_sentence.replace('BOS ', '')
-    generated_sentence = generated_sentence.replace(' EOS', '')
-
-    generated_sentence_reverse = generated_sentence.split(' ')
-    generated_sentence_reverse.reverse()
-
-    generated_sentence_reverse = ' '.join(generated_sentence_reverse)
-
-    return generated_sentence_reverse
-
-
 # ==================================================
 # function for evaluate captions with COCO API
-# 此处已经将 COCO 接口改写成 Python 3 的格式了
+# Python 3.6 formulation
 # ==================================================
 def evaluate(json_path, images, captions, flag=True):
     import sys
@@ -190,27 +158,6 @@ class LanguageModelCriterion(nn.Module):
         target_cpu = target.data.cpu().numpy()
         if 10516 in target_cpu:
             ipdb.set_trace()
-
-        output = - input.gather(1, target) * mask
-        output = torch.sum(output) / batch_size
-
-        return output
-
-
-class ComputeFocalLoss(nn.Module):
-    def __init__(self):
-        super(ComputeFocalLoss, self).__init__()
-
-    def forward(self, input, target, mask):
-        batch_size = input.size(0)
-
-        target = target[:, :input.size(1)]
-        mask = mask[:, :input.size(1)]
-
-        input = to_contiguous(input).view(-1, input.size(2))
-
-        target = to_contiguous(target).view(-1, 1)
-        mask = to_contiguous(mask).view(-1, 1)
 
         output = - input.gather(1, target) * mask
         output = torch.sum(output) / batch_size
