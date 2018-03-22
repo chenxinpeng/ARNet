@@ -71,10 +71,14 @@ Finally, make sure that the `data` folder contains the following files:
 ./bash_image_caption_soft_att_xe.sh
 ```
 
+We provide the weights of the model trained by ourselves, you can download it from [here](https://drive.google.com/file/d/1AAQjj-GDj6dqZA8cXDun0Bvx7PrvkJXR/view?usp=sharing), put it on the under `./models` folder.
+
 #### Fine-tuning with our ARNet
 ```bash
 ./bash_image_caption_soft_att_rcst_lstm.sh
 ```
+
+We also provide the pre-trained model with ARNet, you can download and run the model from [here]() by yourself.
 
 #### Inference with Greedy Search
 ```bash
