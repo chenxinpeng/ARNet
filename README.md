@@ -1,7 +1,7 @@
 # PyTorch Implementation of ARNet
 
 ## Introduction
-Regularizing RNNs for Caption Generation by Reconstructing The Past with The Present, this paper is accept by CVPR 2018. Our idea is simple but very effective in RNN-based model.
+Regularizing RNNs for Caption Generation by Reconstructing The Past with The Present, this paper is accept by CVPR 2018. Our idea is simple but very effective in RNN-based model. ARNet 
 
 
 ## Prerequisites
@@ -74,7 +74,7 @@ Finally, make sure that the `data` folder contains the following files:
 ./bash_image_caption_soft_att_xe.sh
 ```
 
-We provide the weights of the model trained by ourselves, you can download it from [here](https://drive.google.com/file/d/1AAQjj-GDj6dqZA8cXDun0Bvx7PrvkJXR/view?usp=sharing), put it on the under `./models` folder.
+We provide the weights of the model trained by ourselves, you can download it from [here](https://drive.google.com/drive/folders/1Gq4nwy-NvkvEjowH9Av6obs96t2yjfor?usp=sharing), put it on the under `./models` folder.
 
 #### Fine-tuning with our ARNet
 ```bash
@@ -92,11 +92,6 @@ We also provide the pre-trained model with ARNet, you can download and run the m
 ```bash
 ./bash_image_caption_soft_att_infb.sh
 ```
-
-
-### Performance
-We provide the weights of attentive encoder-decoder model to reproduce the results which reported in our paper:
-
 
 
 
