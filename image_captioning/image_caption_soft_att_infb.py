@@ -19,12 +19,8 @@ from class_soft_att import *
 
 def beam_search(opt, beam_images_names):
     model = ShowAttendTellModel(opt)
-
     model.load_state_dict(torch.load(opt.beam_model_path))
-
     model.cuda()
-
-    # eval mode
     model.eval()
 
     beam_images_sents = []
