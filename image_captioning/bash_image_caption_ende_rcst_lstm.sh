@@ -8,7 +8,7 @@ seed=110
 version=offline
 
 rcst_weight=0.005
-rcst_learning_rate=0.0001
+rcst_learning_rate=0.0005
 
 rcst_model_path=models/ende_v4_seed_"$seed"/model_epoch-"$idx".pth
 rcst_model_save_path=models/ende_v4_seed_"$seed"_rcst_"$rcst_weight"

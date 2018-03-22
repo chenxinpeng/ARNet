@@ -10,7 +10,7 @@ batch_size=400
 version=offline
 
 rcst_time=1
-rcst_lr=0.0001
+rcst_lr=0.0005
 rcst_scalar=0.005
 lr_decay_every=3
 lr_decay_rate=1.0
