@@ -81,7 +81,7 @@ We provide the weights of the model trained by ourselves, you can download it fr
 ./bash_image_caption_soft_att_rcst_lstm.sh
 ```
 
-We also provide the pre-trained model with ARNet, you can download and run the model from [here]() by yourself.
+We also provide the pre-trained model with ARNet, you can download and run the model from [here](https://drive.google.com/drive/folders/1TFDvcPMJ1T2KNUjucE4O8mUv4c8V8eXN?usp=sharing) by yourself.
 
 #### Inference with Greedy Search
 ```bash
