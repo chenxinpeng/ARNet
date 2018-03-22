@@ -41,7 +41,7 @@ Finally, make sure that the `data` folder contains the following files:
  - idx_to_word.pkl
 
 
- ### Training with Corss Entropy
+ ### Training with Cross Entropy
 
 
 ## Code  Captioning
