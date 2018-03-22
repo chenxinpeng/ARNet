@@ -44,11 +44,13 @@ Finally, make sure that the `data` folder contains the following files:
 ```bash
 ./bash_image_caption_ende_xe.sh
 ```
+The pre-trained model can be downloaded from [here](https://drive.google.com/drive/folders/1-l2XY4B_pZT1nrpOwyhs3Z9-QY8MVD30?usp=sharing), put it on the under `./models` folder.
 
 ### Fine-tuning with our ARNet
 ```bash
 ./bash_image_caption_ende_rcst_lstm.sh
 ```
+The fine-tuned model with our ARNet can be downloaded from [here](https://drive.google.com/drive/folders/1mVNRe_6JCbGixNLpEauJ7DBaJi82XGVT?usp=sharing), put it on the under `./models` folder.
 
 ### Inference with Greedy Search
 ```bash
@@ -68,14 +70,14 @@ Finally, make sure that the `data` folder contains the following files:
 ./bash_image_caption_soft_att_xe.sh
 ```
 
-We provide the weights of the model trained by ourselves, you can download it from [here](https://drive.google.com/drive/folders/1Gq4nwy-NvkvEjowH9Av6obs96t2yjfor?usp=sharing), put it on the under `./models` folder.
+The pre-trained model can be downloaded from from [here](https://drive.google.com/drive/folders/1Gq4nwy-NvkvEjowH9Av6obs96t2yjfor?usp=sharing), put it on the under `./models` folder.
 
 ### Fine-tuning with our ARNet
 ```bash
 ./bash_image_caption_soft_att_rcst_lstm.sh
 ```
 
-We also provide the pre-trained model with ARNet, you can download and run the model from [here](https://drive.google.com/drive/folders/1TFDvcPMJ1T2KNUjucE4O8mUv4c8V8eXN?usp=sharing) by yourself.
+The fine-tuned model with our ARNet can be downloaded from [here](https://drive.google.com/drive/folders/1TFDvcPMJ1T2KNUjucE4O8mUv4c8V8eXN?usp=sharing) by yourself, put it on the under `./models` folder.
 
 ### Inference with Greedy Search
 ```bash
