@@ -8,6 +8,8 @@ Regularizing RNNs for Caption Generation by Reconstructing The Past with The Pre
 
 ## Image Captioning
 
+### Image Feature Extraction
+
 ### Data Pre-processing
 You can download and use the data from [here](https://drive.google.com/open?id=1MxKySRCnXN2Q0bBg5Asi_mjJPpNwhtC5):
 ```bash
