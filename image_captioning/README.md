@@ -77,8 +77,8 @@ Then, visualize the hidden states:
 ```bash
 python3.6 prepro_tsne_reduction.py --vis_batch_size 80 \\
                                    --truncation 0  \\
-                                   --hidden_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states.pkl \\
-                                   --hidden_reduction_save_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states_reduction.pkl
+                                   --hidden_path models/encoder_decoder_inception_v4_seed_116/model_epoch-33_hidden_states.pkl \\
+                                   --hidden_reduction_save_path models/encoder_decoder_inception_v4_seed_116/model_epoch-33_hidden_states_reduction.pkl
 ```
 
 
@@ -106,4 +106,19 @@ The fine-tuned model with our ARNet can be downloaded from [here](https://drive.
 ### Inference with Beam Search
 ```bash
 ./bash_image_caption_soft_att_infb.sh
+```
+
+### Visualization with t-SNE
+
+First, get the hidden states of the sentences:
+```bash
+./bash_image_caption_soft_att_vis.sh
+```
+
+Then, visualize the hidden states:
+```bash
+python3.6 prepro_tsne_reduction.py --vis_batch_size 80 \\
+                                   --truncation 0  \\
+                                   --hidden_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states.pkl \\
+                                   --hidden_reduction_save_path models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states_reduction.pkl
 ```
