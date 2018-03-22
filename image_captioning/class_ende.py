@@ -1,5 +1,3 @@
-#! encoding: UTF-8
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -13,7 +11,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import *
 
-import opts
 from classLSTMCore import LSTMCore
 
 
@@ -200,7 +197,6 @@ class EncoderDecoder(nn.Module):
                     it = it.view(-1).long()
                 xt = self.embed(Variable(it, requires_grad=False).cuda())
             if t >= 2:
-                # stop when all finished
                 if t == 2:
                     unfinished = it > 0
                 else:

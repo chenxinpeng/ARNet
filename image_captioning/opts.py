@@ -47,7 +47,7 @@ def parse_opt():
     parser.add_argument('--t_SNE_model_path', type=str, default='')
     parser.add_argument('--t_SNE_save_path', type=str, default='')
 
-    #  of regularizer
+    # ARNet
     parser.add_argument('--rcst_time', type=int, default=1)
     parser.add_argument('--rcst_size', type=int, default=512)
     parser.add_argument('--rcst_weight', type=float, default=0.005)
@@ -126,7 +126,7 @@ def parse_opt():
     # params of optimizer
     parser.add_argument('--optim', type=str, default='adam')
     parser.add_argument('--learning_rate', type=float, default=5e-4)
-    parser.add_argument('--learning_rate_decay_start', type=int, default=-1)
+    parser.add_argument('--learning_rate_decay_start', type=int, default=0)
     parser.add_argument('--learning_rate_decay_every', type=int, default=3)
     parser.add_argument('--learning_rate_decay_rate', type=float, default=0.8,)
     parser.add_argument('--optim_alpha', type=float, default=0.9)
