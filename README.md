@@ -48,6 +48,11 @@ Finally, make sure that the `data` folder contains the following files:
 ./bash_image_caption_ende_xe.sh
 ```
 
+#### Fine-tuning with ARNet
+```bash
+./bash_image_caption_ende_rcst_lstm.sh
+```
+
 #### Inference with Greedy Search
 ```bash
 ./bash_image_caption_ende_infg.sh
@@ -59,17 +64,16 @@ Finally, make sure that the `data` folder contains the following files:
 ```
 
 
-###  Encoder-Decoder + ARNet
-```bash
-./bash_image_caption_ende_rcst_lstm.sh
-```
-
-
 ### Attentive Encoder-Decoder
 
 #### Training
 ```bash
 ./bash_image_caption_soft_att_xe.sh
+```
+
+#### Fine-tuning with ARNet
+```bash
+./bash_image_caption_soft_att_rcst_lstm.sh
 ```
 
 #### Inference with Greedy Search
@@ -82,11 +86,6 @@ Finally, make sure that the `data` folder contains the following files:
 ./bash_image_caption_soft_att_infb.sh
 ```
 
-
-### Attentive Encoder-Decoder + ARNet
-```bash
-./bash_image_caption_soft_att_rcst_lstm.sh
-```
 
 ### Performance
 We provide the weights of attentive encoder-decoder model to reproduce the results which reported in our paper:
