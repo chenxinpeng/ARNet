@@ -13,7 +13,7 @@ In our paper, we use [Inception-v4](https://github.com/tensorflow/models/blob/ma
 CUDA_VISIBLE_DEVICES=0 python3.6 extract_feats_conv_fc_v4.py
 ```
 
-## Caption Data Pre-processing
+## Data Pre-processing
 You can download and use the data from [here](https://drive.google.com/open?id=1MxKySRCnXN2Q0bBg5Asi_mjJPpNwhtC5):
 ```bash
 unzip -q data.zip
@@ -37,6 +37,8 @@ Finally, make sure that the `data` folder contains the following files:
  - word_to_idx.pkl
  - idx_to_word.pkl
 
+
+## Caption Evaluation Tools
 Download and the `coco-caption` files which are used for evaluation from [here](). I have changed these evaluation code into `Python 3.6`since my environment is Python 3.6. Uncompress the `coco-caption` under the current folder.
 
 
