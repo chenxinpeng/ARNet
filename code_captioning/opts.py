@@ -20,7 +20,7 @@ def parse_opt():
     parser.add_argument('--model_save_path', type=str, default='')
     parser.add_argument('--test_model_path', type=str, default='')
 
-    # 优化器, 学习率参数
+    # params of optimizer
     parser.add_argument('--optim', type=str, default='adam')
     parser.add_argument('--learning_rate', type=float, default=5e-4)
     parser.add_argument('--learning_rate_decay_every', type=int, default=2)
@@ -42,33 +42,29 @@ def parse_opt():
     parser.add_argument('--lstm_size', type=int, default=256)
     parser.add_argument('--att_hidden_size', type=int, default=512)
     parser.add_argument('--encoding_att_size', type=int, default=300)
-    parser.add_argument('--drop_prob_lm', type=float, default=0.1)
+    parser.add_argument('--drop_prob', type=float, default=0.1)
     parser.add_argument('--input_encoding_size', type=int, default=50)
 
     parser.add_argument('--num_review_steps', type=int, default=8)
     parser.add_argument('--drop_prob_reason', type=float, default=0.1)
 
-    parser.add_argument('--reconstruct_weight', type=float, default=0.005)
-    parser.add_argument('--reconstruct_model_base_path', type=str, default='')
-    parser.add_argument('--reconstruct_model_save_path', type=str, default='')
+    parser.add_argument('--rcst_weight', type=float, default=0.005)
+    parser.add_argument('--rcst_model_base_path', type=str, default='')
+    parser.add_argument('--rcst_model_save_path', type=str, default='')
 
-    # params of scheduled sampling
-    parser.add_argument('--is_scheduled_sampling', type=bool, default=False)
+    # params of Scheduled Sampling (SS)
+    parser.add_argument('--is_ss', type=bool, default=False)
     parser.add_argument('--ss_prob', type=float, default=0.0)
-    parser.add_argument('--scheduled_sampling_start', type=int, default=-1,
-                        help='at what iteration to start decay gt probability')
-    parser.add_argument('--scheduled_sampling_increase_every', type=int, default=5,
-                        help='every how many iterations thereafter to gt probability')
-    parser.add_argument('--scheduled_sampling_increase_prob', type=float, default=0.05,
-                        help='How much to update the prob')
-    parser.add_argument('--scheduled_sampling_max_prob', type=float, default=0.25,
-                        help='Maximum scheduled sampling prob.')
+    parser.add_argument('--ss_start', type=int, default=-1)
+    parser.add_argument('--ss_increase_every', type=int, default=5)
+    parser.add_argument('--ss_increase_prob', type=float, default=0.05)
+    parser.add_argument('--ss_max_prob', type=float, default=0.25)
 
-    parser.add_argument('--t_SNE_batch_size', type=int, default=16)
-    parser.add_argument('--t_SNE_model_path', type=str, default='')
-    parser.add_argument('--t_SNE_save_path', type=str, default='')
+    parser.add_argument('--vis_batch_size', type=int, default=16)
+    parser.add_argument('--vis_model_path', type=str, default='')
+    parser.add_argument('--vis_save_path', type=str, default='')
 
-    # params of Zoneout
+    # params of ZoneOut
     parser.add_argument('--c_ratio', type=float, default=0.0)
     parser.add_argument('--h_ratio', type=float, default=0.0)
 
