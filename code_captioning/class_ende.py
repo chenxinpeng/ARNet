@@ -39,12 +39,18 @@ class EncodeDecode(nn.Module):
         self.logit.weight.data.uniform_(-0.1, 0.1)
         self.logit.bias.data.fill_(0)
 
+    def copy_weights(self, model_path):
+        src_weights = torch.load(model_path)
+        own_dict = self.state_dict()
+        for key, var in own_dict.items():
+            print("copy weights: {}  size: {}".format(key, var.size()))
+            own_dict[key].copy_(src_weights[key])
+
     def init_hidden(self, batch_size):
         weight = next(self.parameters()).data
         init_h = Variable(weight.new(1, batch_size, self.lstm_size).zero_())
         init_c = Variable(weight.new(1, batch_size, self.lstm_size).zero_())
         init_state = (init_h, init_c)
-
         return init_state
 
     def forward(self, code_matrix, comment_matrix, current_comment_mask_cuda):
@@ -193,7 +199,6 @@ class EncodeDecode(nn.Module):
             encode_xt = self.embed(encode_words)
             encode_output, encode_state = self.encode_lstm.forward(encode_xt, encode_state)
             encode_hidden_states.append(encode_output)
-        encode_hidden_states = torch.cat([_.unsqueeze(1) for _ in encode_hidden_states], 1)
 
         # decode 部分
         decode_state = (encode_state[0].clone(), encode_state[1].clone())
