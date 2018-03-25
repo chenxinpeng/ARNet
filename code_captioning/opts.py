@@ -45,6 +45,7 @@ def parse_opt():
     parser.add_argument('--drop_prob', type=float, default=0.1)
     parser.add_argument('--input_encoding_size', type=int, default=50)
 
+    # params for reviewnet
     parser.add_argument('--num_review_steps', type=int, default=8)
     parser.add_argument('--drop_prob_reason', type=float, default=0.1)
 
