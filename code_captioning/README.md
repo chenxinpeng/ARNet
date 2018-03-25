@@ -68,3 +68,35 @@ To test the ReviewNet with greedy search, run
 
 
 ## Attentive Encoder-Decoder Model
+
+### Training with MLE
+To train the attention-based model with MLE, run
+```bash
+./bash_code_caption_soft_att_xe.sh
+```
+
+### Fine-tuning with ARNet
+To fine-tuning the model with our ARNet based on the MLE model, run
+```bash
+./bash_code_caption_soft_att_rcst.sh
+```
+
+### Inference
+To test the model, run
+```bash
+./bash_code_caption_soft_att_inf.sh
+```
+
+### Visualization
+To get the hidden states of the whole sequence, run
+```bash
+./bash_code_caption_soft_att_vis.sh
+```
+Then, visualize the hidden state as follows:
+```bash
+python3.6 prepro_tsne_reduction_vis.py --vis_batch_size 80 \
+                                       --truncation 0  \
+                                       --hidden_path '...' \
+                                       --hidden_reduction_save_path '...'
+```
+
