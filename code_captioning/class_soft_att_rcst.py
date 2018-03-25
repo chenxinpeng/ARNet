@@ -4,18 +4,20 @@ from __future__ import print_function
 
 import os
 import ipdb
+import numpy as np
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.autograd import *
+from torch.autograd import Variable
 
 from classLSTMCore import LSTMCore
+from classLSTMSoftAttentionCore import LSTMSoftAttentionCore
 
 
-class EncodeDecodeARNet(nn.Module):
+class AttEncodeDecodeARNet(nn.Module):
     def __init__(self, opt):
-        super(EncodeDecodeARNet, self).__init__()
+        super(AttEncodeDecodeARNet, self).__init__()
 
         self.token_cnt = opt.token_cnt
         self.word_cnt = opt.word_cnt
@@ -24,17 +26,27 @@ class EncodeDecodeARNet(nn.Module):
         self.input_encoding_size = opt.input_encoding_size
         self.encode_time_step = opt.code_truncate
         self.decode_time_step = opt.comment_truncate
+        self.ss_prob = opt.ss_prob
+
+        self.encoding_feat_size = opt.lstm_size
+        self.encoding_att_size = opt.encoding_att_size
+        self.att_hidden_size = opt.att_hidden_size
 
         self.encode_lstm = LSTMCore(self.input_encoding_size, self.lstm_size, self.drop_prob)
-        self.decode_lstm = LSTMCore(self.input_encoding_size, self.lstm_size, self.drop_prob)
+        self.decode_lstm = LSTMSoftAttentionCore(self.input_encoding_size,
+                                                 self.lstm_size,
+                                                 self.encoding_feat_size,
+                                                 self.encoding_att_size,
+                                                 self.att_hidden_size,
+                                                 self.drop_prob_lm)
 
         self.embed = nn.Embedding(self.token_cnt + 1, self.input_encoding_size)
         self.logit = nn.Linear(self.lstm_size, self.word_cnt)
         self.init_weights()
 
-        # params of ARNet
-        self.rcst_weight = opt.reconstruct_weight
-        self.rcst_lstm = LSTMCore(self.lstm_size, self.lstm_size, self.drop_prob)
+        # ARNet
+        self.rcst_weight = opt.rcst_weight
+        self.rcst_lstm = LSTMCore(self.lstm_size, self.lstm_size, self.drop_prob_lm)
         self.h_2_pre_h = nn.Linear(self.lstm_size, self.lstm_size)
         self.rcst_init_weights()
 
@@ -50,25 +62,19 @@ class EncodeDecodeARNet(nn.Module):
         init_state = (init_h, init_c)
         return init_state
 
-    # init
+    # init params of ARNet
     def rcst_init_weights(self):
         self.h_2_pre_h.weight.data.uniform_(-0.1, 0.1)
         self.h_2_pre_h.bias.data.fill_(0)
-
-    # copy weights from pre-trained model with cross entropy
-    def copy_weights(self, model_path):
-        src_weights = torch.load(model_path)
-        own_dict = self.state_dict()
-        for key, var in src_weights.items():
-            print("copy weights: {}  size: {}".format(key, var.size()))
-            own_dict[key].copy_(var)
 
     def forward(self, code_matrix, comment_matrix, comment_mask):
         batch_size = code_matrix.size(0)
         encode_state = self.init_hidden(batch_size)
         decode_logit_seq = []
+        outputs = []
 
         # encoder
+        encode_hidden_states = []
         for i in range(self.encode_time_step):
             encode_words = code_matrix[:, i].clone()
 
@@ -77,6 +83,8 @@ class EncodeDecodeARNet(nn.Module):
 
             encode_xt = self.embed(encode_words)
             encode_output, encode_state = self.encode_lstm.forward(encode_xt, encode_state)
+            encode_hidden_states.append(encode_output)
+        encode_hidden_states = torch.cat([_.unsqueeze(1) for _ in encode_hidden_states], 1)  # batch x 300 x 512
 
         # decoder
         decode_state = (encode_state[0].clone(), encode_state[1].clone())
@@ -85,24 +93,34 @@ class EncodeDecodeARNet(nn.Module):
         rcst_loss = 0.0
 
         for i in range(self.decode_time_step):
-            decode_words = comment_matrix[:, i].clone()
+            if i >= 1 and self.ss_prob > 0.0:
+                sample_prob = comment_mask.data.new(batch_size).uniform_(0, 1)
+                sample_mask = sample_prob < self.ss_prob
+                if sample_mask.sum() == 0:
+                    it = comment_matrix[:, i].clone()
+                else:
+                    sample_ind = sample_mask.nonzero().view(-1)
+                    it = comment_matrix[:, i].data.clone()
+                    prob_prev = torch.exp(outputs[-1].data)  # fetch prev distribution: shape Nx(M+1)
+                    it.index_copy_(0, sample_ind, torch.multinomial(prob_prev, 1).view(-1).index_select(0, sample_ind))
+                    it = Variable(it, requires_grad=False)
+            else:
+                it = comment_matrix[:, i].clone()
 
-            if comment_matrix[:, i].data.sum() == 0:
+            if i >= 1 and comment_matrix[:, i].data.sum() == 0:
                 break
 
-            decode_xt = self.embed(decode_words)
-            decode_output, decode_state = self.decode_lstm.forward(decode_xt, decode_state)
-
+            decode_xt = self.embed(it)
+            decode_output, decode_state = self.decode_lstm.forward(decode_xt, encode_hidden_states, decode_state)
             decode_logit_words = F.log_softmax(self.logit(decode_output))
             decode_logit_seq.append(decode_logit_words)
+            outputs.append(decode_logit_words)
 
-            # ARNet
-            rcst_state, rcst_state = self.rcst_lstm.forward(decode_output, rcst_state)
-            rcst_h = self.h_2_pre_h(rcst_state)
-
+            # ARNet part
+            rcst_output, rcst_state = self.rcst_lstm.forward(decode_output, rcst_state)
+            rcst_h = self.h_2_pre_h(rcst_output)
             rcst_diff = rcst_h - pre_h
             rcst_mask = comment_mask[:, i].contiguous().view(-1, batch_size).repeat(1, self.lstm_size)
-
             cur_rcst_loss = torch.sum(torch.sum(torch.mul(rcst_diff, rcst_diff) * rcst_mask, dim=1))
             rcst_loss += cur_rcst_loss * self.rcst_weight / torch.sum(comment_mask[:, i])
 
@@ -123,6 +141,7 @@ class EncodeDecodeARNet(nn.Module):
         logprobs_all = []
 
         # encoder
+        encode_hidden_states = []
         for i in range(self.encode_time_step):
             encode_words = code_matrix[:, i].clone()
 
@@ -131,6 +150,8 @@ class EncodeDecodeARNet(nn.Module):
 
             encode_xt = self.embed(encode_words)
             encode_output, encode_state = self.encode_lstm.forward(encode_xt, encode_state)
+            encode_hidden_states.append(encode_output)
+        encode_hidden_states = torch.cat([_.unsqueeze(1) for _ in encode_hidden_states], 1)
 
         # decoder
         decode_state = (encode_state[0].clone(), encode_state[1].clone())
@@ -138,7 +159,7 @@ class EncodeDecodeARNet(nn.Module):
             if i == 0:
                 it = code_matrix.data.new(batch_size).long().fill_(init_index)
                 decode_xt = self.embed(Variable(it, requires_grad=False).cuda())
-                decode_output, decode_state = self.decode_lstm.forward(decode_xt, decode_state)
+                decode_output, decode_state = self.decode_lstm.forward(decode_xt, encode_hidden_states, decode_state)
             else:
                 max_logprobs, it = torch.max(logprobs.data, 1)
                 it = it.view(-1).long()
@@ -147,7 +168,7 @@ class EncodeDecodeARNet(nn.Module):
                     break
 
                 decode_xt = self.embed(Variable(it, requires_grad=False).cuda())
-                decode_output, decode_state = self.decode_lstm.forward(decode_xt, decode_state)
+                decode_output, decode_state = self.decode_lstm.forward(decode_xt, encode_hidden_states, decode_state)
 
                 seq.append(it)
                 seqLogprobs.append(max_logprobs.view(-1))
@@ -155,7 +176,6 @@ class EncodeDecodeARNet(nn.Module):
             logprobs = F.log_softmax(self.logit(decode_output))
             logprobs_all.append(logprobs)
 
-        # aggregate
         greedy_seq = torch.cat([_.unsqueeze(1) for _ in seq], 1).contiguous()
         greedy_seq_probs = torch.cat([_.unsqueeze(1) for _ in seqLogprobs], 1).contiguous()
         greedy_logprobs_all = torch.cat([_.unsqueeze(1) for _ in logprobs_all], 1).contiguous()

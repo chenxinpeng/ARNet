@@ -94,10 +94,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     
     parser.add_argument('--hidden_path', type=str, 
-        default='example: models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states.pkl')
+        default='example: models/soft_attention_seed_117/model_epoch-51_hidden_states.pkl')
     
     parser.add_argument('--hidden_reduction_save_path', type=str, 
-        default='example: models/soft_attention_inception_v4_seed_117/model_epoch-8_hidden_states_reduction.pkl')
+        default='example: models/soft_attention_seed_117/model_epoch-51_hidden_states_reduction.pkl')
     
     parser.add_argument('--vis_batch_size', type=int, default=80)
     parser.add_argument('--truncation', type=int, default=20)
