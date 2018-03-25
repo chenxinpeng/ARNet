@@ -26,7 +26,7 @@ To train the encoder-decoder model with MLE, run
 ./bash_code_caption_ende_xe.sh
 ```
 
-### Training with ARNet
+### Fine-tuning with ARNet
 Then, we fune-tuning the network with our ARNet,
 ```bash
 ./bash_code_caption_ende_rcst.sh
