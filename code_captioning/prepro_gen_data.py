@@ -20,7 +20,6 @@ def data_prepare_data(args, filename, token2index, word_cnt):
 
     for idx, current_line in enumerate(data_lines):
         seq_data[idx] = {}
-        # seq_data[idx]['code_matrix'] = []
 
         seq_0, seq_1 = current_line.split('\t')
 
@@ -105,7 +104,6 @@ def data_indexing(args):
 
     token2index, index2token, token_cnt = {}, {}, 2
 
-    # token2index['BOS'] = 1
     token2index['EOS'] = 1
     token2index['BOS'] = 2
     for _, token in enumerate(comment_set):
