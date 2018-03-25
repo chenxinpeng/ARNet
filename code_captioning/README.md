@@ -4,6 +4,7 @@
  - Python 3.6
  - Pytorch 0.12
  - CUDA 8.0
+ - [coco-caption tools for Python 3.6]()
 
 ## Data Pre-processing
 The dataset of HabeasCorpus should be existed under the folder `data`, which is download from [ReviewNet](https://github.com/kimiyoung/review_net/blob/master/code_caption/README.md). Then we pre-process the dataset as follows:
