@@ -54,5 +54,17 @@ python3.6 prepro_tsne_reduction_vis.py --vis_batch_size 80 \
 
 ## ReviewNet Model
 
+### Training with MLE
+We reimplement the ReviewNet proposed in [Yang](https://arxiv.org/abs/1605.07912) with PyTorch. To train the ReviewNet with MLE, run
+```bash
+./bash_code_caption_reviewnet_xe.sh
+```
+
+### Inference
+To test the ReviewNet with greedy search, run
+```bash
+./bash_code_caption_reviewnet_inf.sh
+```
+
 
 ## Attentive Encoder-Decoder Model
