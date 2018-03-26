@@ -1,12 +1,12 @@
 # Regularizing RNNs for Caption Generation by Reconstructing The Past with The Present (ARNet)
 
 ## Introduction
-This paper is accept by CVPR 2018. Our idea is simple but very effective in RNN-based model.
+This paper is accept by CVPR 2018. Our idea is novel and very effective in RNN-based models. We validate our ARNet in the following tasks:
 
  - [Image Captioning](https://github.com/chenxinpeng/ARNet/tree/master/image_captioning)
  - [Code Captioning](https://github.com/chenxinpeng/ARNet/tree/master/code_captioning)
  - [Permuted Sequential MNIST](https://github.com/chenxinpeng/ARNet/tree/master/permuted_sequential_mnist)
- 
+
 ## Citation
 
     @article{chen2018arnet,
