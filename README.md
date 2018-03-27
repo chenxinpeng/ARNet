@@ -1,7 +1,10 @@
 # Regularizing RNNs for Caption Generation by Reconstructing The Past with The Present (ARNet)
 
 ## Introduction
-This paper is accept by CVPR 2018. Our idea is novel and very effective in RNN-based models. We validate our ARNet in the following tasks:
+This paper is accept by CVPR 2018. Our idea is novel and very effective in RNN-based models. We regularize RNNs by reconstruct the previous hidden state with the current one.
+
+
+We validate our ARNet in the following tasks:
 
  - [Image Captioning](https://github.com/chenxinpeng/ARNet/tree/master/image_captioning)
  - [Code Captioning](https://github.com/chenxinpeng/ARNet/tree/master/code_captioning)
