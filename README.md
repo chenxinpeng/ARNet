@@ -1,7 +1,7 @@
 # Regularizing RNNs for Caption Generation by Reconstructing The Past with The Present (ARNet)
 
 ## Introduction
-This paper is accept by CVPR 2018. Our idea is novel and very effective in RNN-based models. We regularize RNNs by reconstructing the previous hidden state with the current one. Therefore, the relationships between neighbouring hidden states in RNNS can be further exploited by our ARNet.
+This paper is accept by CVPR 2018. Our idea is novel and very effective in RNN-based models. We regularize RNNs by reconstructing the previous hidden state with the current one. Therefore, the relationships between neighbouring hidden states in RNNs can be further exploited by our ARNet.
 
 
 We validate our ARNet in the following tasks:
