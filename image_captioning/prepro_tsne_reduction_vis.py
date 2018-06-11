@@ -32,7 +32,7 @@ def plot_embedding(X, batch_size, title=None):
             ax.plot(X[i, 0], X[i, 1], color='orangered', marker='.')  # free running hidden states
 
 
-def cosine_similarity(v1, v2):
+def cosine_distance(v1, v2):
     """ 
     compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)
     """
@@ -43,7 +43,7 @@ def cosine_similarity(v1, v2):
         sumxx += x*x
         sumyy += y*y
         sumxy += x*y
-    return 1.0 - sumxy / math.sqrt(sumxx * sumyy)
+    return sumxy / math.sqrt(sumxx * sumyy)
 
 
 def dim_reduction(opt):
@@ -84,10 +84,10 @@ def calculate_distance(teacher_forcing_hidden, free_running_hidden):
     for i in range(bsize):
         current_tf_h = teacher_forcing_hidden[i]
         current_fr_h = free_running_hidden[i]
-        distance_cosine += cosine_similarity(current_tf_h, current_fr_h)
+        distance_cosine += cosine_distance(current_tf_h, current_fr_h)
 
     print("cosine distance_pw: {}".format(distance_cosine / bsize))
-    print("cosine distance_mc: {}".format(cosine_similarity(mean_teacher_forcing, mean_free_running)))
+    print("cosine distance_mc: {}".format(cosine_distance(mean_teacher_forcing, mean_free_running)))
 
 
 if __name__ == "__main__":

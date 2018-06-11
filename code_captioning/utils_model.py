@@ -47,7 +47,7 @@ with open(opt.index2token_path, 'rb') as f:
 
 
 # compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)
-def cosine_similarity(v1, v2):
+def cosine_distance(v1, v2):
     sumxx, sumxy, sumyy = 0, 0, 0
     for i in range(len(v1)):
         x = v1[i]
@@ -55,7 +55,7 @@ def cosine_similarity(v1, v2):
         sumxx += x*x
         sumyy += y*y
         sumxy += x*y
-    return 1.0 - sumxy / math.sqrt(sumxx * sumyy)
+    return sumxy / math.sqrt(sumxx * sumyy)
 
 
 def to_contiguous(tensor):
@@ -198,7 +198,7 @@ def compute_distance(hidden_states):
     for i in range(shape_0):
         current_tf_h = teacher_forcing_hidden_states[i]
         current_fr_h = free_running_hidden_states[i]
-        distance_cosine += cosine_similarity(current_tf_h, current_fr_h)
+        distance_cosine += cosine_distance(current_tf_h, current_fr_h)
 
     print("cosine distance_pw: {}".format(distance_cosine/shape_0))
-    print("cosine distance_mc: {}".format(cosine_similarity(mean_teacher_forcing, mean_free_running)))
+    print("cosine distance_mc: {}".format(cosine_distance(mean_teacher_forcing, mean_free_running)))

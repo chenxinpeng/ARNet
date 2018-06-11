@@ -31,7 +31,7 @@ with open(opt.train_images_captions_index, 'rb') as f:
     train_images_captions_index = cPickle.load(f, encoding="bytes")
 
 
-def cosine_similarity(v1, v2):
+def cosine_distance(v1, v2):
     sumxx, sumxy, sumyy = 0, 0, 0
     for i in range(len(v1)):
         x = v1[i]
@@ -39,7 +39,7 @@ def cosine_similarity(v1, v2):
         sumxx += x*x
         sumyy += y*y
         sumxy += x*y
-    return 1.0 - sumxy / math.sqrt(sumxx * sumyy)
+    return sumxy / math.sqrt(sumxx * sumyy)
 
 
 # function for generating sentence from index

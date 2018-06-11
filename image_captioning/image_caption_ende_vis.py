@@ -36,10 +36,10 @@ def compute_distance(hidden_states):
     for i in range(shape_0):
         current_tf_h = teacher_forcing_hidden_states[i]
         current_fr_h = free_running_hidden_states[i]
-        distance_cosine += cosine_similarity(current_tf_h, current_fr_h)
+        distance_cosine += cosine_distance(current_tf_h, current_fr_h)
 
     print("cosine distance_pw: {}".format(distance_cosine/shape_0))
-    print("cosine distance_mc: {}".format(cosine_similarity(mean_teacher_forcing, mean_free_running)))
+    print("cosine distance_mc: {}".format(cosine_distance(mean_teacher_forcing, mean_free_running)))
 
 
 def visilization(opt, val_images_names):

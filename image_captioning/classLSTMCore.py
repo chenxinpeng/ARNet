@@ -48,9 +48,7 @@ class LSTMCore(nn.Module):
         sigmoid_chunk_sig = F.sigmoid(sigmoid_chunk)
 
         in_gate = sigmoid_chunk_sig.narrow(1, 0, self.lstm_size)
-
         forget_gate = sigmoid_chunk_sig.narrow(1, self.lstm_size, self.lstm_size)
-
         out_gate = sigmoid_chunk_sig.narrow(1, self.lstm_size * 2, self.lstm_size)
 
         in_transform = F.tanh(all_input_sums.narrow(1, 3 * self.lstm_size, self.lstm_size))
