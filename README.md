@@ -13,12 +13,12 @@ We validate our ARNet on the following tasks:
 ## Citation
 
     @InProceedings{Chen_2018_CVPR,
-    author = {Chen, Xinpeng and Ma, Lin and Jiang, Wenhao and Yao, Jian and Liu, Wei},
-    title = {Regularizing RNNs for Caption Generation by Reconstructing the Past With the Present},
-    booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-    month = {June},
-    year = {2018}
-}
+      author = {Chen, Xinpeng and Ma, Lin and Jiang, Wenhao and Yao, Jian and Liu, Wei},
+      title = {Regularizing RNNs for Caption Generation by Reconstructing the Past With the Present},
+      booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+      month = {June},
+      year = {2018}
+    }
 
 ## License
 ARNet is released under the MIT License (refer to the LICENSE file for details).
