@@ -156,8 +156,6 @@ class LanguageModelCriterion(nn.Module):
         mask = to_contiguous(mask).view(-1, 1)
 
         target_cpu = target.data.cpu().numpy()
-        if 10516 in target_cpu:
-            ipdb.set_trace()
 
         output = - input.gather(1, target) * mask
         output = torch.sum(output) / batch_size

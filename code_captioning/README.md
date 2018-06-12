@@ -2,7 +2,7 @@
 
 ## Dependencies
  - Python 3.6
- - Pytorch 0.12
+ - Pytorch [0.1.12](http://download.pytorch.org/whl/cu80/torch-0.1.12.post1-cp36-cp36m-linux_x86_64.whl)
  - CUDA 8.0
 
 ## Data Pre-processing
