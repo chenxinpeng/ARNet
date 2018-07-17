@@ -150,6 +150,7 @@ def parse_opt():
     parser.add_argument('--lstm_size', type=int, default=512)
     parser.add_argument('--lstm_step', type=int, default=30)
     parser.add_argument('--seq_length', type=int, default=30)
+    parser.add_argument('--drop_prob_lm', type=float, default=0.1)
     parser.add_argument('--vocab_size', type=int, default=10516)
     parser.add_argument('--word_embed_size', type=int, default=512)
     parser.add_argument('--conv_feat_size', type=int, default=1536)
