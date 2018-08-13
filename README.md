@@ -7,9 +7,9 @@ This [paper](http://openaccess.thecvf.com/content_cvpr_2018/html/Chen_Regularizi
 
 ## Experiments
 We validate our ARNet on the following tasks:
- - [Image Captioning](http://git.code.oa.com/laviechen/ARNet/tree/master/image_captioning)
- - [Code Captioning](http://git.code.oa.com/laviechen/ARNet/tree/master/code_captioning)
- - [Permuted Sequential MNIST](http://git.code.oa.com/laviechen/ARNet/tree/master/permuted_sequential_mnist)
+ - [Image Captioning](https://github.com/TencentAILabVision/ARNet/tree/master/image_captioning)
+ - [Code Captioning](https://github.com/TencentAILabVision/ARNet/tree/master/code_captioning)
+ - [Permuted Sequential MNIST](https://github.com/TencentAILabVision/ARNet/tree/master/permuted_sequential_mnist)
 
 
 ## Citation
