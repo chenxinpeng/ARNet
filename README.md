@@ -3,7 +3,7 @@
 ## Introduction
 This [paper](http://openaccess.thecvf.com/content_cvpr_2018/html/Chen_Regularizing_RNNs_for_CVPR_2018_paper.html) was accepted by CVPR 2018 as poster. The proposed method is very effective in RNN-based models.  In our framework, RNNs are regularized by reconstructing the previous hidden state with the current one. Therefore, the relationships between neighbouring hidden states in RNNs can be further exploited by our ARNet.
 
-![ARNet framework](https://ws1.sinaimg.cn/large/0069RVTdgy1fu8dkzjjcmj31kw0krdqu.jpg|width=100)
+![ARNet framework](https://ws3.sinaimg.cn/large/0069RVTdgy1fu8e207jskj31kw0hik2m.jpg)
 
 ## Experiments
 We validate our ARNet on the following tasks:
