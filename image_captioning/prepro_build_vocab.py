@@ -117,10 +117,10 @@ def generate_train_index(images_captions):
 if __name__ == "__main__":
     opt = opts.parse_opt()
 
-    with open(opt.official_train_captions_path, 'r') as train_fr:
+    with open(opt.official_train_captions_path, 'rb') as train_fr:
         train_images_captions = cPickle.load(train_fr)
 
-    with open(opt.official_val_captions_path, 'r') as val_fr:
+    with open(opt.official_val_captions_path, 'rb') as val_fr:
         val_images_captions = cPickle.load(val_fr)
 
     # combine all sentences in captions
@@ -139,13 +139,13 @@ if __name__ == "__main__":
     train_images_captions_index = generate_train_index(images_captions)
 
     # save
-    with open(opt.idx_to_word_path, 'w') as fw:
+    with open(opt.idx_to_word_path, 'wb') as fw:
         cPickle.dump(idx_to_word, fw)
 
-    with open(opt.word_to_idx_path, 'w') as fw:
+    with open(opt.word_to_idx_path, 'wb') as fw:
         cPickle.dump(word_to_idx, fw)
 
     np.save(opt.bias_init_vector_path, bias_init_vector)
 
-    with open(opt.train_images_captions_index, 'w') as f:
+    with open(opt.train_images_captions_index, 'wb') as f:
         cPickle.dump(train_images_captions_index, f)
